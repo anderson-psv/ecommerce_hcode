@@ -1,0 +1,1 @@
+<?php if(!class_exists('Rain\Tpl')){exit;}?><li><a href='/categories/4'>Categoria 3</a></li><li><a href='/categories/2'>TI suporte</a></li>
