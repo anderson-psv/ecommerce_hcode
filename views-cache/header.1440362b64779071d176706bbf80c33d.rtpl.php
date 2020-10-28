@@ -328,7 +328,8 @@
       <!-- sidebar menu: : style can be found in sidebar.less -->
       <ul class="sidebar-menu">
         <li class="header">MAIN NAVIGATION</li>
-        <li class="active"><a href="/admin/users"><i class="fa fa-users"></i><span>Usuários</span></a></li>
+        <li><a href="/admin/users"><i class="fa fa-users"></i><span>Usuários</span></a></li>
+        <li><a href="/admin/categories"><i class="fa fa-users"></i><span>Categorias</span></a></li>
       </ul>
     </section>
     <!-- /.sidebar -->
