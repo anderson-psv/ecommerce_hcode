@@ -41,6 +41,7 @@ class Sql {
 		$this->setParams($stmt, $params);
 
 		$stmt->execute();
+
 	}
 
 	public function select($rawQuery, $params = array()):array
