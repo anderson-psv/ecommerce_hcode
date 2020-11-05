@@ -12,6 +12,7 @@ class User extends Model
     const SECRET   = "HcodePhp7_Secret";
     const SECRET2  = "HcodePHp7_NotSec";
     const ERROR    = "UserError";
+    const ERROR_REGISTER = "UserErrorRegister";
 
     public static function getFromSession()
     {
@@ -72,6 +73,10 @@ class User extends Model
 
         $data = $results[0];
         
+        echo $password."  ";
+        echo $data["despassword"];
+        var_dump(password_verify($password, $data["despassword"]));
+
         if(password_verify($password, $data["despassword"]) === true)
         {
             $user = new User();
@@ -302,6 +307,7 @@ class User extends Model
             ));
     }
 
+    /* Erros  */
     public static function setError($msg)
     {
         $_SESSION[Cart::SESSION_ERROR] = $msg;
@@ -321,12 +327,51 @@ class User extends Model
         $_SESSION[Cart::SESSION_ERROR] = NULL;
     }
 
+    /* Erros de registro/cadastro */
+    public static function setErrorRegister($msg)
+	{
+
+		$_SESSION[User::ERROR_REGISTER] = $msg;
+
+	}
+
+	public static function getErrorRegister()
+	{
+
+		$msg = (isset($_SESSION[User::ERROR_REGISTER]) && $_SESSION[User::ERROR_REGISTER]) ? $_SESSION[User::ERROR_REGISTER] : '';
+
+		User::clearErrorRegister();
+
+		return $msg;
+
+	}
+
+	public static function clearErrorRegister()
+	{
+
+		$_SESSION[User::ERROR_REGISTER] = NULL;
+
+	}
+
+    public static function checkLoginExist($login)
+    {
+        $sql = new Sql();
+
+        $results = $sql->select("SELECT * FROM tb_users WHERE deslogin = :deslogin", [
+            ':deslogin'=>$login
+        ]);
+
+        return (count($results) > 0);
+    }
+
     public static function getPasswordHash($password)
     {
         return password_hash($password, PASSWORD_DEFAULT, [
             'cost'=>12
         ]);
     }
+
+    
 }
 
 ?>
