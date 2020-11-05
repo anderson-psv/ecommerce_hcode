@@ -238,6 +238,11 @@ $app->post('/register', function()
 
 	$user->save();
 
+	if(isset($_SESSION['registerValues']))
+	{
+		unset($_SESSION['registerValues']);
+	}
+
 	User::login($_POST['email'], $_POST['password']);
 
 	header("Location: /checkout");
@@ -349,7 +354,12 @@ $app->post("/profile", function()
 
 	$user->setData($_POST);
 
-	$user->update();
+	$user->update(true);
+
+	$_SESSION[User::SESSION]['deslogin']  = $_POST['desemail'];
+	$_SESSION[User::SESSION]['desperson'] = $_POST['desperson'];
+	$_SESSION[User::SESSION]['desemail']  = $_POST['desemail'];
+	$_SESSION[User::SESSION]['nrphone']  = $_POST['nrphone'];
 
 	User::setSuccess("Dados alterados com sucesso.");
 

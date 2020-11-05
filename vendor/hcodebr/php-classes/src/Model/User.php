@@ -74,10 +74,6 @@ class User extends Model
 
         $data = $results[0];
         
-        echo $password."  ";
-        echo $data["despassword"];
-        var_dump(password_verify($password, $data["despassword"]));
-
         if(password_verify($password, $data["despassword"]) === true)
         {
             $user = new User();
@@ -155,15 +151,21 @@ class User extends Model
         $this->setData($results[0]);
     }
 
-    public function update()
+    public function update($ishashed = false)
     {
         $sql = new Sql();
+
+        if(!$ishashed)
+        {
+            $this->setdespassword(User::getPasswordHash($this->getdespassword()));
+        }
+        
 
         $results = $sql->select("CALL sp_usersupdate_save(:iduser, :desperson, :deslogin, :despassword, :desemail, :nrphone, :inadmin)", array(
             ":iduser"      => $this->getiduser(),
             ":desperson"   => utf8_encode($this->getdesperson()),
             ":deslogin"    => $this->getdeslogin(),
-            ":despassword" => User::getPasswordHash($this->getdespassword()),
+            ":despassword" => $this->getdespassword(),
             ":desemail"    => $this->getdesemail(),
             ":nrphone"     => $this->getnrphone(),
             ":inadmin"     => $this->getinadmin()
@@ -399,8 +401,6 @@ class User extends Model
             'cost'=>12
         ]);
     }
-
-    
 }
 
 ?>
