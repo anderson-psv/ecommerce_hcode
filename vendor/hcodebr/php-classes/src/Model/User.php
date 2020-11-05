@@ -13,6 +13,7 @@ class User extends Model
     const SECRET2  = "HcodePHp7_NotSec";
     const ERROR    = "UserError";
     const ERROR_REGISTER = "UserErrorRegister";
+    const SUCCESS = "UserSuccess";
 
     public static function getFromSession()
     {
@@ -317,21 +318,21 @@ class User extends Model
     /* Erros  */
     public static function setError($msg)
     {
-        $_SESSION[Cart::SESSION_ERROR] = $msg;
+        $_SESSION[User::ERROR] = $msg;
     }
 
     public static function getError()
     {
-        $msg = (isset($_SESSION[Cart::SESSION_ERROR])) ? $_SESSION[Cart::SESSION_ERROR] : '';
+        $msg = (isset($_SESSION[User::ERROR])) ? $_SESSION[User::ERROR] : '';
 
-        Cart::clearMsgError();
+        User::clearError();
 
         return $msg;
     }
 
     public static function clearError()
     {
-        $_SESSION[Cart::SESSION_ERROR] = NULL;
+        $_SESSION[User::ERROR] = NULL;
     }
 
     /* Erros de registro/cadastro */
@@ -358,7 +359,28 @@ class User extends Model
 
 		$_SESSION[User::ERROR_REGISTER] = NULL;
 
-	}
+    }
+    
+    /* Sucesso */
+    public static function setSuccess($msg)
+    {
+        $_SESSION[User::SUCCESS] = $msg;
+    }
+
+    public static function getSuccess()
+    {
+        $msg = (isset($_SESSION[User::SUCCESS])) ? $_SESSION[User::SUCCESS] : '';
+
+        User::clearSuccess();
+
+        return $msg;
+    }
+
+    public static function clearSuccess()
+    {
+        $_SESSION[User::SUCCESS] = NULL;
+    }
+    /* Sucesso Fim*/
 
     public static function checkLoginExist($login)
     {
