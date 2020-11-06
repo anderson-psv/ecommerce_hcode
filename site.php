@@ -1,10 +1,10 @@
 <?php
 
 use Hcode\Page;
-use Hcode\Model\Product;
-use Hcode\Model\Category;
-use Hcode\Model\Cart;
 use Hcode\Model\Address;
+use Hcode\Model\Cart;
+use Hcode\Model\Category;
+use Hcode\Model\Product;
 use Hcode\Model\User;
 
 
@@ -62,6 +62,8 @@ $app->get("/products/:desurl", function($desurl)
 		"categories"=>$product->getCategories()
 	]);
 });
+
+/* Carrinho de Compras ------------------------------------------------------- */
 
 $app->get("/cart", function() 
 {
@@ -138,17 +140,105 @@ $app->get("/checkout", function()
 {
 	User::verifyLogin(false);
 
+	$address = new Address();
 	$cart = Cart::getFromSession();
 
-	$address = new Address();
+	if (!isset($_GET['zipcode']))
+	{
+		$_GET['zipcode'] = $cart->getdeszipcode();
+	}
+
+	if(isset($_GET['zipcode']))
+	{
+		$address->loadFromCEP($_GET['zipcode']);
+
+		$cart->setdeszipcode($_GET['zipcode']);
+
+		$cart->save();
+
+		$cart->getCalculateTotal();
+	}
+
+	if(!$address->getdesaddress()) 	  { $address->setdesaddress('');}
+	if(!$address->getdescomplement()) { $address->setdescomplement('');}
+	if(!$address->getdesdistrict())   { $address->setdesdistrict('');}
+	if(!$address->getdescity())       { $address->setdescity('');}
+	if(!$address->getdesstate())      { $address->setdesstate('');}
+	if(!$address->getdescountry())    { $address->setdescountry('');}
+	if(!$address->getdeszipcode())    { $address->setdeszipcode('');}
 
 	$page = new Page();
 
 	$page->setTpl("checkout", [
 		'cart'=>$cart->getValues(),
-		'address'=>$address->getValues()
+		'address'=>$address->getValues(),
+		'products'=>$cart->getProducts(),
+		'error'=>Address::getError()
 	]);
 });
+
+$app->post("/checkout", function()
+{	
+	User::verifyLogin(false);
+
+	$address = new Address();
+	$user = User::getFromSession();
+
+	if(!isset($_POST['zipcode']) || $_POST['zipcode'] == '')
+	{
+		Address::setError("Informe o CEP.");
+		header("Location: /checkout");
+		exit;
+	}
+
+	if(!isset($_POST['desaddress']) || $_POST['desaddress'] == '')
+	{
+		Address::setError("Informe o endereço.");
+		header("Location: /checkout");
+		exit;
+	}
+
+	if(!isset($_POST['desdistrict']) || $_POST['desdistrict'] == '')
+	{
+		Address::setError("Informe o bairro.");
+		header("Location: /checkout");
+		exit;
+	}
+
+	if(!isset($_POST['descity']) || $_POST['descity'] == '')
+	{
+		Address::setError("Informe a cidade.");
+		header("Location: /checkout");
+		exit;
+	}
+
+	if(!isset($_POST['desstate']) || $_POST['desstate'] == '')
+	{
+		Address::setError("Informe o estado.");
+		header("Location: /checkout");
+		exit;
+	}
+
+	if(!isset($_POST['descountry']) || $_POST['descountry'] == '')
+	{
+		Address::setError("Informe o Pais.");
+		header("Location: /checkout");
+		exit;
+	}
+
+	$_POST['deszipcode'] = $_POST['zipcode'];
+	$_POST['idperson']   = $user->getidperson();
+
+	$address->setData($_POST);
+
+	$address->save();
+
+	header("Location: /order");
+	exit;
+	
+});
+
+/* Login de usuário do site ------------------------------------------------------------------ */
 
 $app->get('/login', function()
 {
@@ -190,6 +280,7 @@ $app->get('/logout', function()
 	exit;
 });
 
+/* Cadastro de Usuário do Site ------------------------------------------------------- */
 
 $app->post('/register', function()
 {
@@ -249,7 +340,7 @@ $app->post('/register', function()
 	exit;
 });
 
-/* FORGOT PASSWORD SECTION --------------------------------------------------------------------*/
+/* Recuperar Senha --------------------------------------------------------------------*/
 
 $app->get("/forgot", function() {
 	$page = new Page();
@@ -301,6 +392,8 @@ $app->post("/forgot/reset", function() {
 	$page->setTpl("forgot-reset-success");
 });
 
+
+/* Minha Conta ----------------------------------------------------------------- */
 
 $app->get("/profile", function()
 {
@@ -356,10 +449,11 @@ $app->post("/profile", function()
 
 	$user->update(true);
 
+	//Atualiza variaveis da sessão
 	$_SESSION[User::SESSION]['deslogin']  = $_POST['desemail'];
 	$_SESSION[User::SESSION]['desperson'] = $_POST['desperson'];
 	$_SESSION[User::SESSION]['desemail']  = $_POST['desemail'];
-	$_SESSION[User::SESSION]['nrphone']  = $_POST['nrphone'];
+	$_SESSION[User::SESSION]['nrphone']   = $_POST['nrphone'];
 
 	User::setSuccess("Dados alterados com sucesso.");
 
