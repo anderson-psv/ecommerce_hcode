@@ -201,6 +201,7 @@ class Cart extends Model
 
         if($totals['nrqtd'] > 0)
         {
+
             if($totals['vlheight'] < 2) {$totals['vlheight']  = 2;}
             if($totals['vlweight'] < 16) {$totals['vlweight'] = 16;}
 
@@ -220,6 +221,7 @@ class Cart extends Model
 				'nVlValorDeclarado'=>$totals['vlprice'],
 				'sCdAvisoRecebimento'=>'S'
             ]);
+            
 
             $xml = simplexml_load_file("http://ws.correios.com.br/calculador/CalcPrecoPrazo.asmx/CalcPrecoPrazo?".$qs);
 

@@ -2,6 +2,8 @@
 
 namespace Hcode\DB;
 
+use PDOException;
+
 class Sql {
 
 	const HOSTNAME = "127.0.0.1";
