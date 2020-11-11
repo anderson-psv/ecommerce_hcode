@@ -26,7 +26,7 @@ $app->post('/admin/login', function()
 	User::login($_POST['login'], $_POST['password']);
 
 	header("Location: /admin");
-	exit();
+	exit;
 });
 
 /* FORGOT PASSWORD SECTION --------------------------------------------------------------------*/
@@ -43,7 +43,7 @@ $app->post("/admin/forgot", function() {
 	$user = User::getForgot($_POST["email"]);
 
 	header("Location: /admin/forgot/sent");
-	exit();
+	exit;
 });
 
 $app->get("/admin/forgot/sent", function() {

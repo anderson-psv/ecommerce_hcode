@@ -38,7 +38,7 @@ class User extends Model
             return false;
         }
         else
-        {
+        {   
             if($inadmin === true && (bool)$_SESSION[User::SESSION]['inadmin'] === true)
             {
                 return true;
