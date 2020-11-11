@@ -118,7 +118,12 @@ class User extends Model
     {
         $sql = new Sql();
 
-        return $sql->select("SELECT * FROM tb_users a INNER JOIN tb_persons b USING(idperson) ORDER BY b.desperson");
+        $results = $sql->select("SELECT * FROM tb_users a INNER JOIN tb_persons b USING(idperson) ORDER BY b.desperson");
+
+        foreach($results as &$row)
+        {
+            $row['desperson'] = utf8_decode($row['desperson']);
+        }
     }
 
     public function save() 
@@ -163,7 +168,7 @@ class User extends Model
 
         $results = $sql->select("CALL sp_usersupdate_save(:iduser, :desperson, :deslogin, :despassword, :desemail, :nrphone, :inadmin)", array(
             ":iduser"      => $this->getiduser(),
-            ":desperson"   => utf8_encode($this->getdesperson()),
+            ":desperson"   => $this->getdesperson(),
             ":deslogin"    => $this->getdeslogin(),
             ":despassword" => $this->getdespassword(),
             ":desemail"    => $this->getdesemail(),

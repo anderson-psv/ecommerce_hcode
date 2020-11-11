@@ -9,14 +9,15 @@ class Sql {
 	const HOSTNAME = "127.0.0.1";
 	const USERNAME = "root";
 	const PASSWORD = "";
-	const DBNAME = "db_ecommerce";
+	const DBNAME   = "db_ecommerce";
+	const ENCODE   = "utf8";
 
 	private $conn;
 
 	public function __construct()
 	{
 		$this->conn = new \PDO(
-			"mysql:dbname=".Sql::DBNAME.";host=".Sql::HOSTNAME, 
+			"mysql:dbname=".Sql::DBNAME.";host=".Sql::HOSTNAME.";charset=".Sql::ENCODE, 
 			Sql::USERNAME,
 			Sql::PASSWORD
 		);
