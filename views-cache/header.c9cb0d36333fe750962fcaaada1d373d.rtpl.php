@@ -328,10 +328,10 @@
       <!-- sidebar menu: : style can be found in sidebar.less -->
       <ul class="sidebar-menu">
         <li class="header">MAIN NAVIGATION</li>
-        <li><a href="/admin/categories"><i class="fa fa-users"></i><span>Categorias</span></a></li>
-        <li><a href="/admin/orders"><i class="fa fa-shopping-cart"></i><span>Pedidos</span></a></li>
-        <li><a href="/admin/products"><i class="fa fa-users"></i><span>Produtos</span></a></li>
         <li><a href="/admin/users"><i class="fa fa-users"></i><span>Usuários</span></a></li>
+        <li><a href="/admin/orders"><i class="fa fa-shopping-cart"></i><span>Pedidos</span></a></li>
+        <li><a href="/admin/categories"><i class="fa fa-gears"></i><span>Categorias</span></a></li>
+        <li><a href="/admin/products"><i class="fa fa-gears"></i><span>Produtos</span></a></li>
       </ul>
     </section>
     <!-- /.sidebar -->

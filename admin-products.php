@@ -17,7 +17,7 @@ $app->get("/admin/products", function()
 	}
 	else
 	{
-		$pagination = Product::getPage($page, 2);
+		$pagination = Product::getPage($page);
 	}
 
 	$pages = [];
