@@ -163,6 +163,7 @@ $app->get("/checkout", function()
 	}
 
 	if(!$address->getdesaddress()) 	  { $address->setdesaddress('');}
+	if(!$address->getdesnumber()) 	  { $address->setdesnumber('');}
 	if(!$address->getdescomplement()) { $address->setdescomplement('');}
 	if(!$address->getdesdistrict())   { $address->setdesdistrict('');}
 	if(!$address->getdescity())       { $address->setdescity('');}
@@ -171,6 +172,7 @@ $app->get("/checkout", function()
 	if(!$address->getdeszipcode())    { $address->setdeszipcode('');}
 
 	$page = new Page();
+
 
 	$page->setTpl("checkout", [
 		'cart'=>$cart->getValues(),
