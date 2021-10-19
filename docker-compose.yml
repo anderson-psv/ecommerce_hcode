@@ -8,8 +8,7 @@ services:
       - .:/composer
     container_name: composer.php
     working_dir: /composer
-    command: chmod 777 .
-    command: install
+    command: bash -c "chmod 777 . && composer install"
 
   php:
     build: ./docker/php
@@ -20,7 +19,6 @@ services:
     restart: always
     image: 'php-apache-server-img'
     container_name: "php7.4-apache-server"
-    #command: sh -c "composer install --ignore-platform-reqs && cp .env.example .env && php artisan key:generate"
 
   mysql-db:
     image: mysql:8.0
