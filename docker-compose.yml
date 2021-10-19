@@ -8,6 +8,7 @@ services:
       - .:/composer
     container_name: composer.php
     working_dir: /composer
+    command: chmod 777 .
     command: install
 
   php:
@@ -40,4 +41,4 @@ services:
       PMA_HOST: mysql-db
     restart: always
     depends_on:
-      - mysql-db    
+      - mysql-db
