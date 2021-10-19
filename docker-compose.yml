@@ -1,0 +1,43 @@
+version: '3.8'
+services:
+  composer:
+    image: composer
+    ports:
+      - "9001:9000"
+    volumes:
+      - .:/composer
+    container_name: composer.php
+    working_dir: /composer
+    command: install
+
+  php:
+    build: ./docker/php
+    volumes:
+      - .:/var/www/html/
+    ports:
+      - "8083:80"
+    restart: always
+    image: 'php-apache-server-img'
+    container_name: "php7.4-apache-server"
+    #command: sh -c "composer install --ignore-platform-reqs && cp .env.example .env && php artisan key:generate"
+
+  mysql-db:
+    image: mysql:8.0
+    volumes:
+      - ./docker/db:/var/lib/mysql
+    ports:
+      - "3359:3306"
+    environment:
+      MYSQL_ROOT_USER: root
+      MYSQL_ROOT_PASSWORD: teste
+
+  phpmyadmin:
+    image: phpmyadmin/phpmyadmin
+    container_name: "phpmyadmin-srv"
+    ports:
+      - 8084:80
+    environment:
+      PMA_HOST: mysql-db
+    restart: always
+    depends_on:
+      - mysql-db    
