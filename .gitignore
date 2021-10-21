@@ -9,4 +9,4 @@ res/site/img/products/4.jpg
 docker/db
 vendor/*
 !vendor/hcodebr
-views-cache
+views-cache/*
