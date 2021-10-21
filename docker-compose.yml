@@ -2,23 +2,23 @@ version: '3.8'
 services:
   composer:
     image: composer
+    container_name: composer.php
     ports:
       - "9001:9000"
     volumes:
       - .:/composer
-    container_name: composer.php
     working_dir: /composer
-    command: bash -c "chmod 777 . && composer install"
+    command: bash -c "chmod 777 . && composer install && composer dump-autoload"
 
   php:
     build: ./docker/php
+    image: 'php-apache-server'
+    container_name: "php7.4-apache-server"
     volumes:
-      - .:/var/www/html/
+      - .:/var/www/html
     ports:
       - "8083:80"
     restart: always
-    image: 'php-apache-server-img'
-    container_name: "php7.4-apache-server"
 
   mysql-db:
     image: mysql:8.0

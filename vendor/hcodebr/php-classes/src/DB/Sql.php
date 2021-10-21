@@ -6,10 +6,10 @@ use PDOException;
 
 class Sql {
 
-	const HOSTNAME = "127.0.0.1";
+	const HOSTNAME = "mysql-db";
 	const USERNAME = "root";
-	const PASSWORD = "";
-	const DBNAME   = "db_ecommerce";
+	const PASSWORD = "teste";
+	const DBNAME   = "mysql";
 	const ENCODE   = "utf8";
 
 	private $conn;
