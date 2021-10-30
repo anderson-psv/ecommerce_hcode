@@ -30,7 +30,7 @@ services:
       MYSQL_ROOT_USER: root
       MYSQL_ROOT_PASSWORD: root
 
- phpmyadmin:
+  phpmyadmin:
    image: phpmyadmin/phpmyadmin
    container_name: "phpmyadmin-srv"
    ports:
