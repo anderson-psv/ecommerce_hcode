@@ -8,14 +8,14 @@ services:
     volumes:
       - .:/composer
     working_dir: /composer
-    command: bash -c "chmod 777 . && composer install && composer dump-autoload"
+    command: bash -c "chmod -R 777 . && composer install && composer dump-autoload"
 
   php:
     build: ./docker/php
     image: 'php-apache-server'
     container_name: "php7.4-apache-server"
     volumes:
-      - .:/var/www/html
+      - .:/var/www/hcode
     ports:
       - "8083:80"
     restart: always
@@ -28,15 +28,15 @@ services:
       - "3359:3306"
     environment:
       MYSQL_ROOT_USER: root
-      MYSQL_ROOT_PASSWORD: teste
+      MYSQL_ROOT_PASSWORD: root
 
-  phpmyadmin:
-    image: phpmyadmin/phpmyadmin
-    container_name: "phpmyadmin-srv"
-    ports:
-      - 8084:80
-    environment:
-      PMA_HOST: mysql-db
-    restart: always
-    depends_on:
-      - mysql-db
+ phpmyadmin:
+   image: phpmyadmin/phpmyadmin
+   container_name: "phpmyadmin-srv"
+   ports:
+     - 8084:80
+   environment:
+     PMA_HOST: mysql-db
+   restart: always
+   depends_on:
+     - mysql-db
